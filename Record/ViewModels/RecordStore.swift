@@ -46,4 +46,21 @@ extension RecordStore {
             print(error.localizedDescription)
         }
     }
+    
+    func delete(id: Int) {
+        objectWillChange.send()
+        guard let recordDB = recordResults.first(
+          where: { $0.id == id })
+          else { return }
+
+        do {
+          let realm = try Realm()
+          try realm.write {
+            realm.delete(recordDB)
+          }
+        } catch let error {
+          // Handle error
+          print(error.localizedDescription)
+        }
+    }
 }
